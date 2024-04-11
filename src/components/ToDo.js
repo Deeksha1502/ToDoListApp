@@ -11,16 +11,17 @@ export const ToDo = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (addInput !== '') {
+    if (addInput === '') {
+      setError('Please enter a to do item!');
+    } else {
       setTodos([...todos, addInput]);
       setAddInput('');
-    } else {
-      setError('Please enter a to do item!');
+      setError('');
     }
   };
 
   const ErrorText = () => {
-    if (addInput === ' ' || addInput === undefined) setError('Please enter a to do item!');
+    if (addInput === ' ' || addInput === undefined) setError('Please enter a to do itemmm!');
   };
 
   const handleDeleteTodo = (text) => {
@@ -48,7 +49,7 @@ export const ToDo = () => {
               ></input>
               <button
                 className='border ml-5 text-2xl font-semibold bg-purple-300 p-3 pl-5 pr-5 rounded-md'
-                onSubmit={ErrorText}
+                onClick={ErrorText}
               >
                 Add
               </button>
