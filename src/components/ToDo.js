@@ -20,6 +20,10 @@ export const ToDo = () => {
     }
   };
 
+  const deleteAll = () => {
+    setTodos([]);
+  };
+
   const ErrorText = () => {
     if (addInput === ' ' || addInput === undefined) setError('Please enter a to do itemmm!');
   };
@@ -52,6 +56,12 @@ export const ToDo = () => {
                 onClick={ErrorText}
               >
                 Add
+              </button>
+              <button
+                className='border ml-5 text-2xl font-semibold bg-purple-300 p-3 pl-5 pr-5 rounded-md'
+                onClick={deleteAll}
+              >
+                Delete all
               </button>
               <div className='text-red-500 text-center'>{error}</div>
             </div>
