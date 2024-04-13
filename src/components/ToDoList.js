@@ -1,27 +1,32 @@
 import { useState } from 'react';
 
-export const ToDo = () => {
+export const ToDoList = () => {
   const [todos, setTodos] = useState([]);
   const [addInput, setAddInput] = useState('');
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
+    setError('');
     setAddInput(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (addInput === '') {
+  };
+
+  const deleteAll = () => {
+    setTodos([]);
+
+    setError('Nothing to delete');
+  };
+
+  const ErrorText = () => {
+    if (addInput === '' || addInput === undefined) {
       setError('Please enter a to do item!');
     } else {
       setTodos([...todos, addInput]);
       setAddInput('');
-      setError('');
     }
-  };
-
-  const ErrorText = () => {
-    if (addInput === ' ' || addInput === undefined) setError('Please enter a to do itemmm!');
   };
 
   const handleDeleteTodo = (text) => {
@@ -53,6 +58,12 @@ export const ToDo = () => {
               >
                 Add
               </button>
+              <button
+                className='border ml-5 text-2xl font-semibold bg-purple-300 p-3 pl-5 pr-5 rounded-md'
+                onClick={deleteAll}
+              >
+                Delete all
+              </button>
               <div className='text-red-500 text-center'>{error}</div>
             </div>
           </form>
@@ -67,6 +78,7 @@ export const ToDo = () => {
           </div>
         </div>
       </div>
+     
     </div>
   );
 };
