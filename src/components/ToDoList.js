@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export const ToDoList = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState([{ id: 1, text: 'practise DSA', isChecked: false }]);
   const [addInput, setAddInput] = useState('');
   const [error, setError] = useState('');
 
@@ -16,26 +16,34 @@ export const ToDoList = () => {
 
   const deleteAll = () => {
     setTodos([]);
-
-    setError('Nothing to delete');
+    setError(' ');
   };
 
   const ErrorText = () => {
     if (addInput === '' || addInput === undefined) {
       setError('Please enter a to do item!');
     } else {
-      setTodos([...todos, addInput]);
+      addTodo([addInput]);
       setAddInput('');
     }
   };
 
-  const handleDeleteTodo = (text) => {
-    const newTodos = todos.filter((todo) => {
-      return todo !== text;
-    });
-
-    setTodos(newTodos);
+  const addTodo = (text) => {
+    const newTodo = {
+      id: todos.length + 1,
+      text: text,
+      isChecked: false,
+    };
+    setTodos([...todos, newTodo]);
   };
+
+  const checkItems = (id) => {
+    setTodos(
+      todos.map((todo) => (todo.id === id ? { ...todo, isChecked: !todo.isChecked } : todo))
+    );
+  };
+
+  console.log('this is todo', { todos });
 
   return (
     <div>
@@ -70,15 +78,16 @@ export const ToDoList = () => {
           <div>
             <ol className='list-decimal text-xl font-semibold text-center list-inside mt-5 mb-5'>
               {todos.map((todo) => (
-                <li key={todo}>
-                  {todo} <button onClick={() => handleDeleteTodo(todo)}>✅</button>
+                <li key={todo.id} className={`${todo.isChecked ? 'line-through' : ''}`}>
+                  {todo.text}
+
+                  <button onClick={() => checkItems(todo.id)}>✅</button>
                 </li>
               ))}
             </ol>
           </div>
         </div>
       </div>
-     
     </div>
   );
 };
