@@ -1,13 +1,15 @@
+import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 
 export const ToDoList = () => {
-  const [todos, setTodos] = useState([{ id: 1, text: 'practise DSA', isChecked: false }]);
+  const [todos, setTodos] = useState([]);
   const [addInput, setAddInput] = useState('');
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setError('');
     setAddInput(e.target.value);
+    console.log(e);
   };
 
   const handleSubmit = (e) => {
@@ -30,8 +32,8 @@ export const ToDoList = () => {
 
   const addTodo = (text) => {
     const newTodo = {
-      id: todos.length + 1,
-      text: text,
+      id: uuidv4(),
+      text,
       isChecked: false,
     };
     setTodos([...todos, newTodo]);
@@ -42,8 +44,6 @@ export const ToDoList = () => {
       todos.map((todo) => (todo.id === id ? { ...todo, isChecked: !todo.isChecked } : todo))
     );
   };
-
-  console.log('this is todo', { todos });
 
   return (
     <div>
