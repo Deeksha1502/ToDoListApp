@@ -76,13 +76,20 @@ export const ToDoList = () => {
             </div>
           </form>
           <div>
-            <ol className='list-decimal text-xl font-semibold text-center list-inside mt-5 mb-5'>
+            <ol className='text-xl font-semibold text-center list-inside mt-5 mb-5'>
               {todos.map((todo) => (
-                <li key={todo.id} className={`${todo.isChecked ? 'line-through' : ''}`}>
-                  {todo.text}
-
-                  <button onClick={() => checkItems(todo.id)}>✅</button>
-                </li>
+                <>
+                  <div className='flex items-center content-center lg:mx-96'>
+                    <input
+                      type='checkbox'
+                      onClick={() => checkItems(todo.id)}
+                      className=' m-3 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+                    />
+                    <li key={todo.id} className={`${todo.isChecked ? 'line-through' : ''}`}>
+                      {todo.text}
+                    </li>
+                  </div>
+                </>
               ))}
             </ol>
           </div>
