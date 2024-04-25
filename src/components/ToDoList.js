@@ -6,10 +6,11 @@ export const ToDoList = () => {
   const [addInput, setAddInput] = useState('');
   const [error, setError] = useState('');
 
+  console.log(todos);
+
   const handleChange = (e) => {
     setError('');
     setAddInput(e.target.value);
-    console.log(e);
   };
 
   const handleSubmit = (e) => {
@@ -21,11 +22,19 @@ export const ToDoList = () => {
     setError(' ');
   };
 
+  const handleButtonDelete = (id) => {
+    setTodos(
+      todos.filter((todo) => {
+        return todo.id !== id && [...todos, todo];
+      })
+    );
+  };
+
   const ErrorText = () => {
     if (addInput === '' || addInput === undefined) {
       setError('Please enter a to do item!');
     } else {
-      addTodo([addInput]);
+      addTodo(addInput);
       setAddInput('');
     }
   };
@@ -88,6 +97,11 @@ export const ToDoList = () => {
                     <li key={todo.id} className={`${todo.isChecked ? 'line-through' : ''}`}>
                       {todo.text}
                     </li>
+                    {todo.isChecked && (
+                      <button className='mx-4' onClick={() => handleButtonDelete(todo.id)}>
+                        ❌
+                      </button>
+                    )}
                   </div>
                 </>
               ))}
