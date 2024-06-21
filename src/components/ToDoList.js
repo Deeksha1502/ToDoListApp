@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export const ToDoList = () => {
   const [todos, setTodos] = useState([]);
-  const [addInput, setAddInput] = useState('');
+  const [addInput, setAddInput] = useState([]);
   const [error, setError] = useState('');
 
   console.log(todos);
@@ -23,11 +23,10 @@ export const ToDoList = () => {
   };
 
   const handleButtonDelete = (id) => {
-    setTodos(
-      todos.filter((todo) => {
-        return todo.id !== id && [...todos, todo];
-      })
-    );
+    const listItems = [...todos];
+    const newListItems = listItems.filter((todo) => todo.id !== id);
+
+    setTodos(newListItems);
   };
 
   const ErrorText = () => {
@@ -45,13 +44,21 @@ export const ToDoList = () => {
       text,
       isChecked: false,
     };
-    setTodos([...todos, newTodo]);
+    const copyListItems = [...todos];
+    copyListItems.push(newTodo);
+
+    setTodos(copyListItems);
   };
 
   const checkItems = (id) => {
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, isChecked: !todo.isChecked } : todo))
-    );
+    const listItems = [...todos];
+    const newListItems = listItems.map((todo) => {
+      if (todo.id === id) {
+        todo.isChecked = !todo.isChecked;
+      }
+      return todo;
+    });
+    setTodos(newListItems);
   };
 
   return (
@@ -88,13 +95,13 @@ export const ToDoList = () => {
             <ol className='text-xl font-semibold text-center list-inside mt-5 mb-5'>
               {todos.map((todo) => (
                 <>
-                  <div className='flex items-center content-center lg:mx-96'>
+                  <div className='flex items-center content-center lg:mx-96' key={todo.id}>
                     <input
                       type='checkbox'
-                      onClick={() => checkItems(todo.id)}
+                      onChange={() => checkItems(todo.id)}
                       className=' m-3 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
                     />
-                    <li key={todo.id} className={`${todo.isChecked ? 'line-through' : ''}`}>
+                    <li key={todo.id} className={todo.isChecked ? 'line-through' : ''}>
                       {todo.text}
                     </li>
                     {todo.isChecked && (
