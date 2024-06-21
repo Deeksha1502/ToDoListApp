@@ -1,8 +1,18 @@
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+const getLocalItems = () => {
+  let list = localStorage.getItem('todos');
+  console.log(list);
+  if (list) {
+    return JSON.parse(localStorage.getItem('todos'));
+  } else {
+    return [];
+  }
+};
 
 export const ToDoList = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(getLocalItems);
   const [addInput, setAddInput] = useState([]);
   const [error, setError] = useState('');
 
@@ -21,6 +31,10 @@ export const ToDoList = () => {
     setTodos([]);
     setError(' ');
   };
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
   const handleButtonDelete = (id) => {
     const listItems = [...todos];
