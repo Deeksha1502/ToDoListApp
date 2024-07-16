@@ -37,10 +37,7 @@ export const ToDoList = () => {
   }, [todos]);
 
   const handleButtonDelete = (id) => {
-    const listItems = [...todos];
-    const newListItems = listItems.filter((todo) => todo.id !== id);
-
-    setTodos(newListItems);
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
   const ErrorText = () => {
@@ -62,28 +59,24 @@ export const ToDoList = () => {
     copyListItems.push(newTodo);
 
     setTodos(copyListItems);
+    console.log('ths is copyListItems in addtodo', copyListItems);
   };
 
   const checkItems = (id) => {
-    const listItems = [...todos];
-    const newListItems = listItems.map((todo) => {
-      if (todo.id === id) {
-        todo.isChecked = !todo.isChecked;
-      }
-      return todo;
-    });
-    setTodos(newListItems);
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => (todo.id === id ? { ...todo, isChecked: !todo.isChecked } : todo))
+    );
   };
 
   return (
     <div>
       <div class='.bg-repeat inset-0 min-h-full -z-10  w-screen bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:9rem_8rem]'>
-        <div class='w-screen  min-h-full absolute bg-gradient-to-r .bg-repeat from-purple-100 to-purple-300'>
-          <h3 className='text-4xl pt-10 text-center font-semibold pb-10'>To Do List</h3>
+        <div class='w-screen  min-h-full absolute bg-gradient-to-r .bg-repeat'>
+          <h3 className='text-4xl pt-10 text-center text-gray-800 font-bold pb-10 '>To Do List</h3>
           <form onSubmit={handleSubmit}>
-            <div className='text-center'>
+            <div className='flex flex-col sm:flex-row gap-4 items-center justify-center'>
               <input
-                className='border p-3 text-2xl font-semibold rounded-md'
+                className='px-4 py-2 flex items-center border border-gray-300  focus:outline-none focus:ring-2 focus:ring-blue-500  p-3 text-2xl font-semibold rounded-md'
                 type='text'
                 name='text'
                 value={addInput}
@@ -91,13 +84,13 @@ export const ToDoList = () => {
                 onChange={handleChange}
               ></input>
               <button
-                className='border ml-5 text-2xl font-semibold bg-purple-300 p-3 pl-5 pr-5 rounded-md'
+                className='border ml-5 text-2xl font-semibold bg-blue-200 hover:bg-blue-100 p-3 pl-5 pr-5 rounded-md'
                 onClick={ErrorText}
               >
                 Add
               </button>
               <button
-                className='border ml-5 text-2xl font-semibold bg-purple-300 p-3 pl-5 pr-5 rounded-md'
+                className='border ml-5 text-2xl font-semibold bg-blue-200 hover:bg-blue-100 p-3 pl-5 pr-5 rounded-md'
                 onClick={deleteAll}
               >
                 Delete all
@@ -108,23 +101,24 @@ export const ToDoList = () => {
           <div>
             <ol className='text-xl font-semibold text-center list-inside mt-5 mb-5'>
               {todos.map((todo) => (
-                <>
-                  <div className='flex items-center content-center lg:mx-96' key={todo.id}>
-                    <input
-                      type='checkbox'
-                      onChange={() => checkItems(todo.id)}
-                      className=' m-3 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-                    />
-                    <li key={todo.id} className={todo.isChecked ? 'line-through' : ''}>
+                <div className='flex items-center content-center lg:mx-96' key={todo.id}>
+                  <input
+                    type='checkbox'
+                    checked={todo.isChecked}
+                    onChange={() => checkItems(todo.id)}
+                    className=' m-3 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+                  />
+                  <li className={todo.isChecked ? 'line-through' : ''}>
+                    <span className=' p-3 text-center flex justify-center text-2xl'>
                       {todo.text}
-                    </li>
-                    {todo.isChecked && (
-                      <button className='mx-4' onClick={() => handleButtonDelete(todo.id)}>
-                        ❌
-                      </button>
-                    )}
-                  </div>
-                </>
+                    </span>{' '}
+                  </li>
+                  {todo.isChecked && (
+                    <button className='mx-4' onClick={() => handleButtonDelete(todo.id)}>
+                      ❌
+                    </button>
+                  )}
+                </div>
               ))}
             </ol>
           </div>
@@ -133,3 +127,5 @@ export const ToDoList = () => {
     </div>
   );
 };
+
+//
