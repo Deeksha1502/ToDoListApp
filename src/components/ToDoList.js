@@ -19,7 +19,7 @@ export const ToDoList = () => {
   console.log(todos);
 
   const handleChange = (e) => {
-    setError('');
+   
     setAddInput(e.target.value);
   };
 
